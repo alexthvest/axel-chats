@@ -10,15 +10,16 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.1" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.0.1" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="5.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\AxelChats.Client\AxelChats.Client.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers" />
+    <ProjectReference Include="..\AxelChats.Infrastructure\AxelChats.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

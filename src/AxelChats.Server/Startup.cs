@@ -1,3 +1,4 @@
+using AxelChats.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -18,6 +19,7 @@ namespace AxelChats.Server
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddInfrastructure(_configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

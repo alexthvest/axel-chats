@@ -31,10 +31,11 @@ namespace AxelChats.Server
 
             app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
-            
+
             app.UseHttpsRedirection();
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

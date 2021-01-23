@@ -1,11 +1,7 @@
 ﻿using System;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+using AxelChats.Infrastructure.Auth;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 
 namespace AxelChats.Server.Controllers
 {
@@ -13,33 +9,27 @@ namespace AxelChats.Server.Controllers
     [Route("api/[controller]")]
     public class AuthController : ControllerBase
     {
-        private readonly IConfiguration _configuration;
+        private readonly IJwtFactory _jwtFactory;
 
-        public AuthController(IConfiguration configuration)
+        public AuthController(IJwtFactory jwtFactory)
         {
-            _configuration = configuration;
+            _jwtFactory = jwtFactory;
         }
 
         [HttpPost("[action]")]
-        public IActionResult Authenticate()
+        public IActionResult Authenticate([FromBody]string name)
         {
-            var claims = new[]
+            var token = _jwtFactory.GenerateAccessToken(new[]
             {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, "alexthvest")
-            };
-
-            var identity = new ClaimsIdentity(claims, JwtBearerDefaults.AuthenticationScheme);
-            var credentials = new SigningCredentials(new SymmetricSecurityKey(
-                Encoding.ASCII.GetBytes(_configuration["Auth:SecretKey"])), SecurityAlgorithms.HmacSha256);
-
-            var securityToken = new JwtSecurityToken(
-                claims: identity.Claims,
-                expires: DateTime.Now.AddMinutes(15),// TODO: Change to Configuration Auth:LifeTime
-                signingCredentials: credentials
-            );
-
-            var token = new JwtSecurityTokenHandler().WriteToken(securityToken);
-            return Ok(token);
+                new Claim(ClaimsIdentity.DefaultNameClaimType, name),
+                new Claim(ClaimTypes.Email, $"{name}@gmail.com")
+            });
+            
+            return Ok(new
+            {
+                Token = token,
+                RefreshToken = ""
+            });
         }
 
         [HttpPost("[action]")]

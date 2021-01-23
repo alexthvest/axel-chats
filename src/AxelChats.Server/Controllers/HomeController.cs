@@ -1,26 +1,26 @@
 ﻿using System.Linq;
-using AxelChats.Infrastructure.Identity;
-using Microsoft.AspNetCore.Identity;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AxelChats.Server.Controllers
 {
     [ApiController]
-    [Route("api/home")]
+    [Route("api/[controller]")]
     public class HomeController : ControllerBase
     {
-        private readonly UserManager<User> _userManager;
+        [Authorize]
+        [HttpGet("[action]")]
+        public IActionResult User()
+        {
+            var nameClaim = HttpContext.User.Claims.First(x => x.Type == ClaimsIdentity.DefaultNameClaimType);
+            var emailClaim = HttpContext.User.Claims.First(x => x.Type == ClaimTypes.Email);
 
-        public HomeController(UserManager<User> userManager)
-        {
-            _userManager = userManager;
-        }
-        
-        public IActionResult GetValues()
-        {
-            var users = _userManager.Users.ToList();
-            
-            return Ok(users);
+            return Ok(new
+            {
+                Name = nameClaim.Value,
+                Email = emailClaim.Value
+            });
         }
     }
 }

@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
-namespace AxelChats.Infrastructure.Contexts
+namespace AxelChats.Infrastructure.Data
 {
     public class ApplicationDbContext : IdentityDbContext<User>
     {

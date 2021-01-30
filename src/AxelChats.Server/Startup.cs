@@ -9,23 +9,21 @@ namespace AxelChats.Server
     public class Startup
     {
         private readonly IConfiguration _configuration;
-        private readonly IHostEnvironment _env;
 
-        public Startup(IConfiguration configuration, IHostEnvironment env)
+        public Startup(IConfiguration configuration)
         {
             _configuration = configuration;
-            _env = env;
         }
 
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddInfrastructure(_configuration, _env);
+            services.AddInfrastructure(_configuration);
         }
 
-        public void Configure(IApplicationBuilder app)
+        public void Configure(IApplicationBuilder app, IHostEnvironment env)
         {
-            if (_env.IsDevelopment())
+            if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }

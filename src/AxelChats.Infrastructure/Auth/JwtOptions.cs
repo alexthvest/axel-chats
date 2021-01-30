@@ -13,7 +13,6 @@ namespace AxelChats.Infrastructure.Auth
 
         public int AccessTokenLifeTime { get; set; }
 
-        public SymmetricSecurityKey SymmetricSecurityKey 
-            => new SymmetricSecurityKey(Encoding.ASCII.GetBytes(SecretKey));
+        public SymmetricSecurityKey SymmetricSecurityKey => new(Encoding.ASCII.GetBytes(SecretKey));
     }
 }

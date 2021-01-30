@@ -6,18 +6,18 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AxelChats.Infrastructure
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration, IHostEnvironment env)
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            var jwtOptions = configuration.GetSection("Auth").Get<JwtOptions>();
+            var authSection = configuration.GetSection("Auth");
+            var jwtOptions = authSection.Get<JwtOptions>();
 
-            services.Configure<JwtOptions>(configuration.GetSection("Auth"));
+            services.Configure<JwtOptions>(authSection);
 
             services.AddDbContext<ApplicationDbContext>(builder =>
                 builder.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
@@ -30,8 +30,9 @@ namespace AxelChats.Infrastructure
                 {
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidateAudience = env.IsProduction(),
-                        ValidateIssuer = env.IsProduction(),
+                        ValidIssuer = jwtOptions.Issuer,
+                        ValidAudience = jwtOptions.Audience,
+
                         ValidateIssuerSigningKey = true,
                         IssuerSigningKey = jwtOptions.SymmetricSecurityKey
                     };

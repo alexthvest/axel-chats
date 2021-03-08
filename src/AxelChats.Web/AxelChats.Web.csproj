@@ -2,11 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>9844e088-73b5-4f0d-9b95-86b8a62cc07f</UserSecretsId>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="5.0.3" />
@@ -14,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AxelChats.Client\AxelChats.Client.csproj" />
+    <ProjectReference Include="..\AxelChats.Infrastructure\AxelChats.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
